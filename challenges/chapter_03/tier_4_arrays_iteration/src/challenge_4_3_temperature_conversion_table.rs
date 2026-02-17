@@ -5,13 +5,11 @@
 // - `c_to_f(c)` for Celsius -> Fahrenheit
 
 pub fn f_to_c(f: f64) -> f64 {
-    let _ = f;
-    0.0
+    (f - 32.0) * 5.0 / 9.0
 }
 
 pub fn c_to_f(c: f64) -> f64 {
-    let _ = c;
-    0.0
+    c * 9.0 / 5.0 + 32.0
 }
 
 // .

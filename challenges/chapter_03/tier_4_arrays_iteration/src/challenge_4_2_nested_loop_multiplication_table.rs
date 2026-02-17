@@ -6,7 +6,13 @@
 // In the original prompt, this would be printed with width formatting.
 
 pub fn multiplication_table_5x5() -> [[u32; 5]; 5] {
-    [[0; 5]; 5]
+    let mut table: [[u32; 5]; 5] = [[0; 5]; 5];
+    for i in 1..=5 {
+        for j in 1..=5 {
+            table[i - 1][j - 1] = (i * j) as u32;
+        }
+    }
+    table
 }
 
 // .

@@ -9,23 +9,45 @@
 // Use loops over slices (`&[i32]`).
 
 pub fn sum(arr: &[i32]) -> i32 {
-    let _ = arr;
-    0
+    let mut total = 0;
+
+    for i in arr {
+        total += i;
+    }
+
+    total
 }
 
 pub fn min(arr: &[i32]) -> i32 {
-    let _ = arr;
-    0
+    let mut smallest: i32 = i32::MAX;
+
+    for &i in arr {
+        if i < smallest {
+            smallest = i;
+        }
+    }
+
+    smallest
 }
 
 pub fn max(arr: &[i32]) -> i32 {
-    let _ = arr;
-    0
+    let mut largest: i32 = i32::MIN;
+
+    for &i in arr {
+        if i > largest {
+            largest = i;
+        }
+    }
+
+    largest
 }
 
 pub fn mean(arr: &[i32]) -> f64 {
-    let _ = arr;
-    0.0
+    if arr.is_empty() {
+        0.0
+    } else {
+        sum(arr) as f64 / arr.len() as f64
+    }
 }
 
 // .
