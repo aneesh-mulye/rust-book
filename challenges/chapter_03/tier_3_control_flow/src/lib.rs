@@ -1,0 +1,3 @@
+pub mod challenge_3_1_fizzbuzz_classic;
+pub mod challenge_3_2_collatz_conjecture;
+pub mod challenge_3_3_loop_with_break_value;

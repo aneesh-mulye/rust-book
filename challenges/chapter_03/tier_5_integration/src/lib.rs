@@ -1,0 +1,4 @@
+pub mod challenge_5_1_prime_sieve;
+pub mod challenge_5_2_fibonacci_with_tuples;
+pub mod challenge_5_3_number_guessing_engine;
+pub mod challenge_5_4_the_gauntlet;
