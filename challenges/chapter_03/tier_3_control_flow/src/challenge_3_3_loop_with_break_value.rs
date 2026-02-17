@@ -4,8 +4,15 @@
 // Return the smallest positive integer `n` such that `n^3 > limit`.
 
 pub fn smallest_cube_exceeding(limit: u64) -> u64 {
-    let _ = limit;
-    0
+    let mut count: u64 = 0;
+
+    loop {
+        let cube = count.pow(3);
+        if cube > limit {
+            break count;
+        }
+        count += 1;
+    }
 }
 
 // .
