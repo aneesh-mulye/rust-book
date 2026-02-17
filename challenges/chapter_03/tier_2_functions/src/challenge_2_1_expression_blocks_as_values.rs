@@ -9,8 +9,15 @@
 // The challenge asks you to use an expression block pattern.
 
 pub fn classify_age(age: u32) -> &'static str {
-    let _ = age;
-    ""
+    if age <= 12 {
+        "child"
+    } else if age <= 19 {
+        "teen"
+    } else if age <= 64 {
+        "adult"
+    } else {
+        "senior"
+    }
 }
 
 // .
@@ -70,31 +77,15 @@ mod tests {
             "child",
             "Age 0 should be classified as child."
         );
-        assert_eq!(
-            classify_age(12),
-            "child",
-            "Age 12 should still be child."
-        );
-        assert_eq!(
-            classify_age(13),
-            "teen",
-            "Age 13 should start teen range."
-        );
-        assert_eq!(
-            classify_age(19),
-            "teen",
-            "Age 19 should still be teen."
-        );
+        assert_eq!(classify_age(12), "child", "Age 12 should still be child.");
+        assert_eq!(classify_age(13), "teen", "Age 13 should start teen range.");
+        assert_eq!(classify_age(19), "teen", "Age 19 should still be teen.");
         assert_eq!(
             classify_age(20),
             "adult",
             "Age 20 should start adult range."
         );
-        assert_eq!(
-            classify_age(64),
-            "adult",
-            "Age 64 should still be adult."
-        );
+        assert_eq!(classify_age(64), "adult", "Age 64 should still be adult.");
         assert_eq!(
             classify_age(65),
             "senior",

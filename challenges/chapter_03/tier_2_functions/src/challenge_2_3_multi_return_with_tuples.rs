@@ -4,8 +4,11 @@
 // If `divisor == 0`, return `(0, 0)`.
 
 pub fn divide(dividend: i32, divisor: i32) -> (i32, i32) {
-    let _ = (dividend, divisor);
-    (0, 0)
+    if divisor == 0 {
+        return (0, 0);
+    }
+
+    (dividend / divisor, dividend % divisor)
 }
 
 // .

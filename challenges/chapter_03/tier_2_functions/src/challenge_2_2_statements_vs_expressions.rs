@@ -8,8 +8,7 @@
 // Challenge note: try to keep the body as a single expression.
 
 pub fn last_digit_squared(n: i32) -> i32 {
-    let _ = n;
-    0
+    (n.abs() % 10).pow(2)
 }
 
 // .
@@ -88,10 +87,6 @@ mod tests {
             1,
             "-1 should produce 1 because last digit magnitude is 1."
         );
-        assert_eq!(
-            last_digit_squared(0),
-            0,
-            "0 should produce 0."
-        );
+        assert_eq!(last_digit_squared(0), 0, "0 should produce 0.");
     }
 }
