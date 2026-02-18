@@ -11,14 +11,15 @@
 // `(inside_function_value, back_in_main_value)`.
 
 pub fn print_and_return(s: String) -> String {
-    let _ = s;
-    String::new()
+    println!("{s}");
+    s
 }
 
 pub fn move_into_function_demo() -> (String, String) {
-    (String::new(), String::new())
+    let s = String::from("ownership");
+    let olds = s.clone();
+    (olds, print_and_return(s))
 }
-
 
 // .
 // .

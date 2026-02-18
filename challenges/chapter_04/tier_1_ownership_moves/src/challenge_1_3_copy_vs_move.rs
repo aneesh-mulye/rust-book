@@ -8,9 +8,16 @@
 // Return `(a, b, s, t)` after fixing the scenario.
 
 pub fn fixed_copy_vs_move() -> (i32, i32, String, String) {
-    (0, 0, String::new(), String::new())
-}
+    let a = 42;
+    let b = a;
+    println!("a = {}, b = {}", a, b);
 
+    let s = String::from("hello");
+    let t = s.clone();
+    println!("s = {}, t = {}", s, t);
+
+    (a, b, s, t)
+}
 
 // .
 // .
@@ -68,8 +75,14 @@ mod tests {
 
         assert_eq!(a, 42, "Expected a=42 for the Copy example. Got {a}.");
         assert_eq!(b, 42, "Expected b=42 for the Copy example. Got {b}.");
-        assert_eq!(s, "hello", "Expected s='hello' after fixing String ownership. Got '{s}'.");
-        assert_eq!(t, "hello", "Expected t='hello' after fixing String ownership. Got '{t}'.");
+        assert_eq!(
+            s, "hello",
+            "Expected s='hello' after fixing String ownership. Got '{s}'."
+        );
+        assert_eq!(
+            t, "hello",
+            "Expected t='hello' after fixing String ownership. Got '{t}'."
+        );
     }
 
     #[test]

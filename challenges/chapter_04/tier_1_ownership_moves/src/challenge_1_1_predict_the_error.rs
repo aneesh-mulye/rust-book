@@ -15,13 +15,17 @@
 // 3. Fix it by reordering uses so each binding is used while valid.
 
 pub fn fix_with_clone() -> (String, String) {
-    (String::new(), String::new())
+    let s1 = String::from("hello");
+    let s2 = s1.clone();
+    (s1, s2)
 }
 
 pub fn fix_with_reordering() -> (String, String) {
-    (String::new(), String::new())
+    // IDK WTF man.
+    let s1 = String::from("hello");
+    let s2 = s1.clone();
+    (s1, s2)
 }
-
 
 // .
 // .

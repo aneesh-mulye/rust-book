@@ -9,15 +9,19 @@
 // "Iteration N: hello"
 
 pub fn consume_and_return(s: String) -> String {
-    let _ = s;
-    String::new()
+    println!("{s}");
+    s
 }
 
 pub fn ownership_loop_messages(iterations: u32, text: String) -> Vec<String> {
-    let _ = (iterations, text);
-    Vec::new()
+    let mut retval: Vec<String> = Vec::new();
+    let mut mytext = text;
+    for i in 1..=iterations {
+        mytext = consume_and_return(mytext);
+        retval.push(format!("Iteration {i}: {mytext}"));
+    }
+    retval
 }
-
 
 // .
 // .
