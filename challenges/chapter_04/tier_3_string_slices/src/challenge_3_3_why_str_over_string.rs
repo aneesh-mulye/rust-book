@@ -9,10 +9,8 @@
 // - `String` slices like `&string[1..]`
 
 pub fn starts_with_r(s: &str) -> bool {
-    let _ = s;
-    false
+    !s.is_empty() && (s.as_bytes()[0] == b'r' || s.as_bytes()[0] == b'R')
 }
-
 
 // .
 // .
@@ -66,10 +64,7 @@ mod tests {
 
     #[test]
     fn accepts_literal_string_and_returns_expected_value() {
-        assert!(
-            starts_with_r("rust"),
-            "Expected true for literal 'rust'."
-        );
+        assert!(starts_with_r("rust"), "Expected true for literal 'rust'.");
     }
 
     #[test]

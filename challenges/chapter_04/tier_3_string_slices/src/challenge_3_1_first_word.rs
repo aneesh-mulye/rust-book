@@ -5,10 +5,15 @@
 // - If no space, return full input.
 
 pub fn first_word(s: &str) -> &str {
-    let _ = s;
-    ""
+    let mut end: usize = 0;
+    for c in s.chars() {
+        if c == ' ' {
+            break;
+        }
+        end += 1;
+    }
+    &s[..end]
 }
-
 
 // .
 // .

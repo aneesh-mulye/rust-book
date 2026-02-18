@@ -8,10 +8,8 @@
 // This challenge assumes ASCII input so byte indices are valid character boundaries.
 
 pub fn slice_parts(s: &str) -> (&str, &str, &str) {
-    let _ = s;
-    ("", "", "")
+    (&s[..3], &s[(s.len() - 4)..], &s[1..(s.len() - 1)])
 }
-
 
 // .
 // .
@@ -69,7 +67,10 @@ mod tests {
 
         assert_eq!(first3, "Rus", "First 3 for 'Rustacean' should be 'Rus'.");
         assert_eq!(last4, "cean", "Last 4 for 'Rustacean' should be 'cean'.");
-        assert_eq!(middle, "ustacea", "Middle for 'Rustacean' should be 'ustacea'.");
+        assert_eq!(
+            middle, "ustacea",
+            "Middle for 'Rustacean' should be 'ustacea'."
+        );
     }
 
     #[test]
