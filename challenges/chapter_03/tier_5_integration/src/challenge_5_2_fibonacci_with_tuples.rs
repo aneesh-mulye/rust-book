@@ -7,8 +7,13 @@
 // Use loop + tuple state updates (`(a, b)`).
 
 pub fn fibonacci(n: u32) -> u64 {
-    let _ = n;
-    0
+    let (mut a, mut b) = (0, 1);
+
+    for _ in 0..n {
+        (a, b) = (b, a + b);
+    }
+
+    a
 }
 
 // .

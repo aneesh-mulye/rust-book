@@ -13,11 +13,30 @@
 // - `Vec<String>` with the generated lines in order.
 // - `Option<usize>` = Some(attempt_number) when found, otherwise None.
 
+use std::cmp::Ordering;
+
 pub const SECRET: i32 = 42;
 
 pub fn evaluate_guesses(secret: i32, guesses: &[i32]) -> (Vec<String>, Option<usize>) {
-    let _ = (secret, guesses);
-    (Vec::new(), None)
+    let mut results: Vec<String> = Vec::new();
+    let mut attempts: Option<usize> = None;
+    for i in 0..guesses.len() {
+        let guess = guesses[i];
+        let attempt = i + 1;
+        match guesses[i].cmp(&secret) {
+            Ordering::Less => results.push(format!("Guess {attempt}: {guess} - Too low!")),
+            Ordering::Greater => results.push(format!("Guess {attempt}: {guess} - Too high!")),
+            Ordering::Equal => {
+                results.push(format!(
+                    "Guess {attempt}: {guess} - Correct! Found it in {attempt} guesses."
+                ));
+                attempts = Some(attempt);
+                break;
+            }
+        }
+    }
+
+    (results, attempts)
 }
 
 // .
@@ -68,7 +87,7 @@ pub fn evaluate_guesses(secret: i32, guesses: &[i32]) -> (Vec<String>, Option<us
 
 #[cfg(test)]
 mod tests {
-    use super::{evaluate_guesses, SECRET};
+    use super::{SECRET, evaluate_guesses};
 
     #[test]
     fn stops_when_correct_guess_is_found() {
@@ -108,8 +127,7 @@ mod tests {
             lines.len()
         );
         assert_eq!(
-            found_at,
-            None,
+            found_at, None,
             "Expected None when secret is not guessed, got {:?}.",
             found_at
         );

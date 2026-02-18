@@ -13,18 +13,35 @@
 pub const MAX: u32 = 50;
 
 pub fn is_prime(n: u32) -> bool {
-    let _ = n;
-    false
+    if n < 2 {
+        return false;
+    }
+    for i in 2..=((n as f64).sqrt() as usize) {
+        if n.is_multiple_of(i as u32) {
+            return false;
+        }
+    }
+    true
 }
 
 pub fn digit_sum(mut n: u32) -> u32 {
-    let _ = &mut n;
-    0
+    let mut sum = 0;
+    while n != 0 {
+        sum += n % 10;
+        n /= 10;
+    }
+    sum
 }
 
 pub fn gauntlet_numbers(max: u32) -> Vec<(u32, u32)> {
-    let _ = max;
-    Vec::new()
+    let mut gauntlet: Vec<(u32, u32)> = Vec::new();
+
+    for i in 2..=max {
+        if is_prime(digit_sum(i)) && is_prime(i) {
+            gauntlet.push((i, digit_sum(i)));
+        }
+    }
+    gauntlet
 }
 
 // .
@@ -75,7 +92,7 @@ pub fn gauntlet_numbers(max: u32) -> Vec<(u32, u32)> {
 
 #[cfg(test)]
 mod tests {
-    use super::{digit_sum, gauntlet_numbers, is_prime, MAX};
+    use super::{MAX, digit_sum, gauntlet_numbers, is_prime};
 
     #[test]
     fn prime_checker_handles_basics() {

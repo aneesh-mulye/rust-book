@@ -7,13 +7,35 @@
 // Keep it simple and loop-based.
 
 pub fn sieve_up_to(limit: usize) -> Vec<bool> {
-    let _ = limit;
-    Vec::new()
+    let mut n = vec![true; limit + 1];
+    n[0] = false;
+    n[1] = false;
+
+    for i in 2..n.len() {
+        if !n[i] {
+            continue;
+        }
+
+        for j in (i + 1)..n.len() {
+            if j.is_multiple_of(i) {
+                n[j] = false;
+            }
+        }
+    }
+
+    n
 }
 
 pub fn collect_primes(sieve: &[bool]) -> Vec<usize> {
-    let _ = sieve;
-    Vec::new()
+    let mut indices: Vec<usize> = Vec::new();
+
+    for i in 2..sieve.len() {
+        if sieve[i] {
+            indices.push(i);
+        }
+    }
+
+    indices
 }
 
 // .
@@ -72,8 +94,8 @@ mod tests {
         let primes = collect_primes(&sieve);
 
         let expected = vec![
-            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73,
-            79, 83, 89, 97,
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83,
+            89, 97,
         ];
 
         assert_eq!(
