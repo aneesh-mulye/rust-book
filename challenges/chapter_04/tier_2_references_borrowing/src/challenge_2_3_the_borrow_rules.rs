@@ -8,17 +8,22 @@
 // Return values are structured for easy testing.
 
 pub fn block_a_values() -> (String, String) {
-    (String::new(), String::new())
+    let s = String::from("hello");
+    let r1 = &s;
+    let r2 = &s;
+    (r1.clone(), r2.clone())
 }
 
 pub fn fixed_block_b_values() -> (String, String) {
-    (String::new(), String::new())
+    let s = String::from("hello");
+    let r1 = &s;
+    let r2 = &s;
+    (r1.clone(), r2.clone())
 }
 
 pub fn fixed_block_c_value() -> String {
-    String::new()
+    String::from("hello")
 }
-
 
 // .
 // .
@@ -73,8 +78,14 @@ mod tests {
     #[test]
     fn block_a_keeps_two_immutable_borrows() {
         let (r1, r2) = block_a_values();
-        assert_eq!(r1, "hello", "Block A first immutable view should be 'hello'. Got '{r1}'.");
-        assert_eq!(r2, "hello", "Block A second immutable view should be 'hello'. Got '{r2}'.");
+        assert_eq!(
+            r1, "hello",
+            "Block A first immutable view should be 'hello'. Got '{r1}'."
+        );
+        assert_eq!(
+            r2, "hello",
+            "Block A second immutable view should be 'hello'. Got '{r2}'."
+        );
     }
 
     #[test]

@@ -10,15 +10,16 @@
 // - `borrowing_loop_messages` returns all lines.
 
 pub fn describe_iteration(iteration: u32, text: &String) -> String {
-    let _ = (iteration, text);
-    String::new()
+    format!("Iteration {iteration}: {text}")
 }
 
 pub fn borrowing_loop_messages(iterations: u32, text: &String) -> Vec<String> {
-    let _ = (iterations, text);
-    Vec::new()
+    let mut retval: Vec<String> = Vec::new();
+    for i in 1..=iterations {
+        retval.push(describe_iteration(i, text));
+    }
+    retval
 }
-
 
 // .
 // .

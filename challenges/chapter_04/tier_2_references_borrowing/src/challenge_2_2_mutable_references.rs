@@ -3,9 +3,8 @@
 // Implement `append_exclamation(s: &mut String)` so each call appends "!".
 
 pub fn append_exclamation(s: &mut String) {
-    let _ = s;
+    s.push('!');
 }
-
 
 // .
 // .

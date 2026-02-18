@@ -4,10 +4,18 @@
 // `text.as_bytes()` and counting contiguous non-space bytes.
 
 pub fn longest_word_length(text: &String) -> usize {
-    let _ = text;
-    0
+    let mut longest: usize = 0;
+    let mut sofar: usize = 0;
+    for c in text.as_bytes() {
+        if *c == b' ' {
+            longest = usize::max(longest, sofar);
+            sofar = 0;
+            continue;
+        }
+        sofar += 1;
+    }
+    usize::max(longest, sofar)
 }
-
 
 // .
 // .
