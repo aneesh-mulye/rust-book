@@ -5,14 +5,32 @@
 // - `normalize(data: &mut [i32])` subtracting the min from every element
 
 pub fn analyze(data: &[i32]) -> (i32, i32, bool) {
-    let _ = data;
-    (0, 0, false)
+    if data.is_empty() {
+        return (i32::MAX, i32::MIN, true);
+    }
+    let mut max = data[0];
+    let mut min = data[0];
+    let mut last = data[0];
+    let mut sorted = true;
+
+    for i in data[1..].iter() {
+        max = i32::max(*i, max);
+        min = i32::min(*i, min);
+        if *i < last {
+            sorted = false;
+        }
+        last = *i;
+    }
+
+    (min, max, sorted)
 }
 
 pub fn normalize(data: &mut [i32]) {
-    let _ = data;
+    let (min, _, _) = analyze(data);
+    for i in data.iter_mut() {
+        *i -= min;
+    }
 }
-
 
 // .
 // .
@@ -97,13 +115,7 @@ mod tests {
         let sorted = [1, 2, 2, 5];
         let unsorted = [2, 1, 3];
 
-        assert!(
-            analyze(&sorted).2,
-            "Expected sorted=true for [1,2,2,5]."
-        );
-        assert!(
-            !analyze(&unsorted).2,
-            "Expected sorted=false for [2,1,3]."
-        );
+        assert!(analyze(&sorted).2, "Expected sorted=true for [1,2,2,5].");
+        assert!(!analyze(&unsorted).2, "Expected sorted=false for [2,1,3].");
     }
 }

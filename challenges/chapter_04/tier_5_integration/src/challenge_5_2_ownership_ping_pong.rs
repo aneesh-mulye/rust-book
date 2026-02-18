@@ -9,29 +9,27 @@
 // Also implement `ping_pong_message(name)` to run the full chain and return final text.
 
 pub fn create_greeting(name: &str) -> String {
-    let _ = name;
-    String::new()
+    format!("Hello, {}!", name)
 }
 
 pub fn make_loud(s: String) -> String {
-    let _ = s;
-    String::new()
+    s.to_uppercase()
 }
 
 pub fn add_punctuation(s: &mut String) {
-    let _ = s;
+    s.push_str(" Welcome!!!");
 }
 
 pub fn print_final(s: &String) -> String {
-    let _ = s;
-    String::new()
+    println!("{}", s);
+    s.to_string()
 }
 
 pub fn ping_pong_message(name: &str) -> String {
-    let _ = name;
-    String::new()
+    let mut s = make_loud(create_greeting(name));
+    add_punctuation(&mut s);
+    print_final(&s)
 }
-
 
 // .
 // .

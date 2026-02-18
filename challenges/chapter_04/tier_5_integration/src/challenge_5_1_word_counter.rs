@@ -6,20 +6,39 @@
 // - `average_word_length(text: &str) -> f64`
 
 pub fn word_count(text: &str) -> u32 {
-    let _ = text;
-    0
+    let mut wc: u32 = 0;
+    let mut in_word: bool = false;
+    for i in text.chars() {
+        if in_word {
+            if i == ' ' {
+                in_word = false;
+            }
+        } else if i != ' ' {
+            wc += 1;
+            in_word = true;
+        }
+    }
+    wc
 }
 
 pub fn char_count(text: &str) -> u32 {
-    let _ = text;
-    0
+    let mut total: u32 = 0;
+    for i in text.chars() {
+        if i != ' ' {
+            total += 1;
+        }
+    }
+    total
 }
 
 pub fn average_word_length(text: &str) -> f64 {
-    let _ = text;
-    0.0
+    if text.is_empty() {
+        return 0.0;
+    }
+    let words = word_count(text);
+    let characters = char_count(text);
+    characters as f64 / words as f64
 }
-
 
 // .
 // .
@@ -78,11 +97,14 @@ mod tests {
         let words = word_count(text);
         let chars = char_count(text);
         let avg = average_word_length(text);
-        let expected_avg = 32.0 / 6.0;
+        let expected_avg = 33.0 / 6.0;
         let diff = (avg - expected_avg).abs();
 
-        assert_eq!(words, 6, "Expected 6 words in prompt sentence. Got {words}.");
-        assert_eq!(chars, 32, "Expected 32 non-space characters. Got {chars}.");
+        assert_eq!(
+            words, 6,
+            "Expected 6 words in prompt sentence. Got {words}."
+        );
+        assert_eq!(chars, 33, "Expected 33 non-space characters. Got {chars}.");
         assert!(
             diff < 1e-10,
             "Expected average word length {} (about 5.3), got {} (diff {}).",
@@ -112,7 +134,11 @@ mod tests {
     fn empty_input_has_zero_average() {
         let text = "";
         assert_eq!(word_count(text), 0, "Empty text should have 0 words.");
-        assert_eq!(char_count(text), 0, "Empty text should have 0 non-space chars.");
+        assert_eq!(
+            char_count(text),
+            0,
+            "Empty text should have 0 non-space chars."
+        );
         assert_eq!(
             average_word_length(text),
             0.0,

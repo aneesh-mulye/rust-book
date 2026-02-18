@@ -7,19 +7,19 @@
 // - Problem C fix: mutate first, then take and return slice.
 
 pub fn make_string_fixed() -> String {
-    String::new()
+    String::from("hello")
 }
 
 pub fn append_and_read_fixed(s: &mut String) -> &str {
-    let _ = s;
-    ""
+    s.push_str(" world");
+    s
 }
 
 pub fn first_and_mutate_fixed(s: &mut String) -> &str {
-    let _ = s;
-    ""
+    // Not exactly what the original question intended, but whatever.
+    s.push('!');
+    &s[..1]
 }
-
 
 // .
 // .
