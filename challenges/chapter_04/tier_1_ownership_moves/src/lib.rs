@@ -1,0 +1,4 @@
+pub mod challenge_1_1_predict_the_error;
+pub mod challenge_1_2_move_into_a_function;
+pub mod challenge_1_3_copy_vs_move;
+pub mod challenge_1_4_ownership_in_a_loop;

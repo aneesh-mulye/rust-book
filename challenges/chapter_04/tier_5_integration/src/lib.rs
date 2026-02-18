@@ -1,0 +1,4 @@
+pub mod challenge_5_1_word_counter;
+pub mod challenge_5_2_ownership_ping_pong;
+pub mod challenge_5_3_the_slice_gauntlet;
+pub mod challenge_5_4_dangling_reference_detective;
