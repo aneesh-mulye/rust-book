@@ -7,14 +7,22 @@
 // `replace_max` should replace only the first occurrence of the maximum value.
 
 pub fn find_max(numbers: &[i32]) -> i32 {
-    let _ = numbers;
-    0
+    let mut max = i32::MIN;
+    for i in numbers {
+        max = i32::max(*i, max);
+    }
+    max
 }
 
 pub fn replace_max(numbers: &mut [i32], replacement: i32) {
-    let _ = (numbers, replacement);
+    let max = find_max(numbers);
+    for i in numbers.iter_mut() {
+        if *i == max {
+            *i = replacement;
+            break;
+        }
+    }
 }
-
 
 // .
 // .
@@ -81,7 +89,10 @@ mod tests {
             "After replacing max with 0, expected [3, 7, 2, 0, 4]. Got {:?}.",
             arr
         );
-        assert_eq!(max_after, 7, "Expected new max 7 after replacement. Got {max_after}.");
+        assert_eq!(
+            max_after, 7,
+            "Expected new max 7 after replacement. Got {max_after}."
+        );
     }
 
     #[test]

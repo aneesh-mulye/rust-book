@@ -3,9 +3,10 @@
 // Implement `double_all(numbers: &mut [i32])` to double every element.
 
 pub fn double_all(numbers: &mut [i32]) {
-    let _ = numbers;
+    for i in numbers.iter_mut() {
+        *i *= 2;
+    }
 }
-
 
 // .
 // .

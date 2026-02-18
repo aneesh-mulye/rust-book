@@ -3,10 +3,12 @@
 // Implement `sum(numbers: &[i32]) -> i32`.
 
 pub fn sum(numbers: &[i32]) -> i32 {
-    let _ = numbers;
-    0
+    let mut total = 0;
+    for i in numbers {
+        total += i;
+    }
+    total
 }
-
 
 // .
 // .
