@@ -1,0 +1,6 @@
+[package]
+name = "tier_4_ownership_and_structs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]

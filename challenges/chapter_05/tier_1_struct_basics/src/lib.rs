@@ -1,0 +1,4 @@
+pub mod challenge_1_1_color_mixer;
+pub mod challenge_1_2_field_init_shorthand;
+pub mod challenge_1_3_struct_update_syntax;
+pub mod challenge_1_4_tuple_structs;

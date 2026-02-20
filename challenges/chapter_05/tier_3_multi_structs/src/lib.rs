@@ -1,0 +1,3 @@
+pub mod challenge_3_1_internal_method_calls;
+pub mod challenge_3_2_struct_composition;
+pub mod challenge_3_3_methods_that_consume_self;

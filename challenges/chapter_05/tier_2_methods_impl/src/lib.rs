@@ -1,0 +1,4 @@
+pub mod challenge_2_1_basic_methods;
+pub mod challenge_2_2_mutating_methods;
+pub mod challenge_2_3_associated_functions;
+pub mod challenge_2_4_methods_taking_other_instances;
