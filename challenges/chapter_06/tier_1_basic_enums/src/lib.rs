@@ -1,0 +1,2 @@
+pub mod challenge_1_1_direction_navigator;
+pub mod challenge_1_2_planet_weight_calculator;

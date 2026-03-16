@@ -1,0 +1,4 @@
+pub mod challenge_3_1_safe_division_and_square_root;
+pub mod challenge_3_2_first_match_finder;
+pub mod challenge_3_3_chained_optionality;
+pub mod challenge_3_4_struct_with_optional_fields;

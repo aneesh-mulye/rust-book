@@ -1,0 +1,3 @@
+pub mod challenge_5_1_door_state_machine;
+pub mod challenge_5_2_inventory_with_pricing_rules;
+pub mod challenge_5_3_calculator_with_memory;
