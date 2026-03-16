@@ -17,56 +17,65 @@ pub struct Particle {
 
 impl Vec2 {
     pub fn new(x: f64, y: f64) -> Vec2 {
-        let _ = (x, y);
-        Vec2 { x: 0.0, y: 0.0 }
+        Vec2 { x, y }
     }
 
     pub fn add(&self, other: &Vec2) -> Vec2 {
-        let _ = (self, other);
-        Vec2 { x: 0.0, y: 0.0 }
+        Vec2 {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
     }
 
     pub fn scale(&self, factor: f64) -> Vec2 {
-        let _ = (self, factor);
-        Vec2 { x: 0.0, y: 0.0 }
+        Vec2 {
+            x: self.x * factor,
+            y: self.y * factor,
+        }
     }
 
     pub fn magnitude(&self) -> f64 {
-        let _ = self;
-        0.0
+        (self.x * self.x + self.y * self.y).sqrt()
     }
 }
 
 impl Particle {
     pub fn new(x: f64, y: f64, vx: f64, vy: f64, mass: f64) -> Particle {
-        let _ = (x, y, vx, vy, mass);
         Particle {
-            position: Vec2 { x: 0.0, y: 0.0 },
-            velocity: Vec2 { x: 0.0, y: 0.0 },
-            mass: 0.0,
+            position: Vec2 { x, y },
+            velocity: Vec2 { x: vx, y: vy },
+            mass,
         }
     }
 
     pub fn step(&mut self, dt: f64) {
-        let _ = (self, dt);
+        self.position = self.position.add(&self.velocity.scale(dt));
     }
 
     pub fn kinetic_energy(&self) -> f64 {
-        let _ = self;
-        0.0
+        let svmag = self.velocity.magnitude();
+        0.5 * self.mass * svmag * svmag
     }
 
     pub fn distance_to(&self, other: &Particle) -> f64 {
-        let _ = (self, other);
-        0.0
+        self.position.add(&other.position.scale(-1.0)).magnitude()
     }
 }
 
-pub fn simulate_steps(mut p1: Particle, mut p2: Particle, steps: u32, dt: f64) -> Vec<(Vec2, Vec2, f64)> {
-    let _ = (&mut p1, &mut p2, steps, dt);
-    Vec::new()
+pub fn simulate_steps(
+    mut p1: Particle,
+    mut p2: Particle,
+    steps: u32,
+    dt: f64,
+) -> Vec<(Vec2, Vec2, f64)> {
+    let mut posns: Vec<(Vec2, Vec2, f64)> = Vec::new();
+    for _ in 0..steps {
+        p1.step(dt);
+        p2.step(dt);
+        posns.push((p1.position, p2.position, p1.distance_to(&p2)));
+    }
+    posns
 }
-
 
 // .
 // .
@@ -116,7 +125,7 @@ pub fn simulate_steps(mut p1: Particle, mut p2: Particle, steps: u32, dt: f64) -
 
 #[cfg(test)]
 mod tests {
-    use super::{simulate_steps, Particle, Vec2};
+    use super::{Particle, Vec2, simulate_steps};
 
     #[test]
     fn vec2_math_is_correct() {
@@ -126,7 +135,11 @@ mod tests {
             "Vec2::new(3,4) should set x=3, y=4. Got {:?}.",
             a
         );
-        assert!((a.magnitude() - 5.0).abs() < 1e-12, "Magnitude of (3,4) should be 5. Got {}.", a.magnitude());
+        assert!(
+            (a.magnitude() - 5.0).abs() < 1e-12,
+            "Magnitude of (3,4) should be 5. Got {}.",
+            a.magnitude()
+        );
 
         let b = Vec2::new(1.0, 2.0);
         let sum = a.add(&b);

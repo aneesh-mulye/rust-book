@@ -6,6 +6,8 @@
 // - `City::is_bigger_than`
 // - `City::distance_to` delegating to `Coordinate::distance_to`
 
+use core::f64;
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Coordinate {
     pub x: f64,
@@ -21,8 +23,9 @@ pub struct City {
 
 impl Coordinate {
     pub fn distance_to(&self, other: &Coordinate) -> f64 {
-        let _ = (self, other);
-        0.0
+        let dx = self.x - other.x;
+        let dy = self.y - other.y;
+        (dx * dx + dy * dy).sqrt()
     }
 }
 
@@ -30,33 +33,48 @@ impl City {
     pub fn new(name: &str, population: u64, x: f64, y: f64) -> City {
         let _ = (name, population, x, y);
         City {
-            name: String::new(),
-            population: 0,
-            location: Coordinate { x: 0.0, y: 0.0 },
+            name: name.to_string(),
+            population,
+            location: Coordinate { x, y },
         }
     }
 
     pub fn is_bigger_than(&self, other: &City) -> bool {
-        let _ = (self, other);
-        false
+        self.population > other.population
     }
 
     pub fn distance_to(&self, other: &City) -> f64 {
-        let _ = (self, other);
-        0.0
+        self.location.distance_to(&other.location)
     }
 }
 
 pub fn closest_pair(cities: &[City; 3]) -> (&str, &str) {
-    let _ = cities;
-    ("", "")
+    let mut min_pair = ("", "");
+    let mut min_dist = f64::MAX;
+    for c1 in cities {
+        for c2 in cities {
+            if c1 == c2 {
+                continue;
+            }
+            let this_dist = c1.distance_to(c2);
+            if this_dist < min_dist {
+                min_dist = this_dist;
+                min_pair = (&c1.name, &c2.name);
+            }
+        }
+    }
+    min_pair
 }
 
 pub fn largest_city_name(cities: &[City; 3]) -> &str {
-    let _ = cities;
-    ""
+    let mut largest_name = "";
+    for city in cities {
+        if city.name.len() > largest_name.len() {
+            largest_name = &city.name;
+        }
+    }
+    largest_name
 }
-
 
 // .
 // .
@@ -106,7 +124,7 @@ pub fn largest_city_name(cities: &[City; 3]) -> &str {
 
 #[cfg(test)]
 mod tests {
-    use super::{closest_pair, largest_city_name, City, Coordinate};
+    use super::{City, Coordinate, closest_pair, largest_city_name};
 
     #[test]
     fn city_methods_delegate_and_compare_correctly() {

@@ -13,16 +13,16 @@ pub struct Color {
 
 impl Color {
     pub fn is_grayscale(&self) -> bool {
-        let _ = self;
-        false
+        self.r == self.g && self.g == self.b
     }
 
     pub fn brightness(&self) -> u8 {
-        let _ = self;
-        0
+        let r: u16 = self.r as u16;
+        let g: u16 = self.g as u16;
+        let b: u16 = self.b as u16;
+        ((r + g + b) / 3) as u8
     }
 }
-
 
 // .
 // .

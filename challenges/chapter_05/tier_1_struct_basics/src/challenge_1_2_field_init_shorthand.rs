@@ -13,12 +13,7 @@ pub struct Sensor {
 }
 
 pub fn create_sensor(id: u32, label: String, reading: f64) -> Sensor {
-    let _ = (id, label, reading);
-    Sensor {
-        id: 0,
-        label: String::new(),
-        reading: 0.0,
-    }
+    Sensor { id, label, reading }
 }
 
 pub fn sensor_examples() -> (Sensor, Sensor) {
@@ -27,7 +22,6 @@ pub fn sensor_examples() -> (Sensor, Sensor) {
         create_sensor(2, String::from("humidity"), 48.0),
     )
 }
-
 
 // .
 // .
@@ -77,7 +71,7 @@ pub fn sensor_examples() -> (Sensor, Sensor) {
 
 #[cfg(test)]
 mod tests {
-    use super::{create_sensor, sensor_examples, Sensor};
+    use super::{Sensor, create_sensor, sensor_examples};
 
     #[test]
     fn creates_sensor_with_matching_fields() {

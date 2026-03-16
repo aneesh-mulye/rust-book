@@ -17,28 +17,26 @@ pub struct Inventory {
 }
 
 pub fn print_name(name: &str) -> String {
-    let _ = name;
-    String::new()
+    String::from("Inventory: ") + name
 }
 
 pub fn total_items(items: &[i32]) -> i32 {
-    let _ = items;
-    0
+    items.iter().sum()
 }
 
 pub fn inventory_demo() -> (String, i32, i32, [i32; 5]) {
-    let inv = Inventory {
-        name: String::new(),
-        items: [0; 5],
+    let mut inv = Inventory {
+        name: String::from("Main Warehouse"),
+        items: [1, 2, 3, 4, 5],
     };
 
     let name_line = print_name(&inv.name);
     let before_total = total_items(&inv.items);
-    let after_total = 0;
+    inv.items[2] = 10;
+    let after_total = total_items(&inv.items);
 
     (name_line, before_total, after_total, inv.items)
 }
-
 
 // .
 // .
@@ -106,8 +104,7 @@ mod tests {
         let (name_line, before_total, after_total, items) = inventory_demo();
 
         assert_eq!(
-            name_line,
-            "Inventory: Main Warehouse",
+            name_line, "Inventory: Main Warehouse",
             "Name line should be formatted using borrowed name field. Got '{name_line}'."
         );
         assert_eq!(

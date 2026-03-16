@@ -13,16 +13,20 @@ pub struct Color {
 
 impl Color {
     pub fn mix(&self, other: &Color) -> Color {
-        let _ = (self, other);
-        Color { r: 0, g: 0, b: 0 }
+        Color {
+            r: (self.r + other.r) / 2,
+            g: (self.g + other.g) / 2,
+            b: (self.b + other.b) / 2,
+        }
     }
 
     pub fn distance(&self, other: &Color) -> f64 {
-        let _ = (self, other);
-        0.0
+        let dr = self.r as f64 - other.r as f64;
+        let dg = self.g as f64 - other.g as f64;
+        let db = self.b as f64 - other.b as f64;
+        f64::sqrt(dr * dr + dg * dg + db * db)
     }
 }
-
 
 // .
 // .

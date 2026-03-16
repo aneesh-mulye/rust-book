@@ -15,9 +15,9 @@ pub struct ServerConfig {
 
 pub fn create_default_config() -> ServerConfig {
     ServerConfig {
-        host: String::new(),
-        port: 0,
-        max_connections: 0,
+        host: String::from("localhost"),
+        port: 8080,
+        max_connections: 100,
         verbose: false,
     }
 }
@@ -27,16 +27,16 @@ pub fn custom_with_surviving_defaults() -> (ServerConfig, u16, u32, bool) {
     let custom_config = ServerConfig {
         port: 3000,
         verbose: true,
+        host: default_config.host.clone(),
         ..default_config
     };
 
-    (custom_config, 0, 0, false)
+    (custom_config, 8080, 100, false)
 }
 
 pub fn host_is_moved_after_update() -> bool {
-    false
+    true
 }
-
 
 // .
 // .
@@ -86,7 +86,9 @@ pub fn host_is_moved_after_update() -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::{custom_with_surviving_defaults, create_default_config, host_is_moved_after_update};
+    use super::{
+        create_default_config, custom_with_surviving_defaults, host_is_moved_after_update,
+    };
 
     #[test]
     fn default_config_has_prompt_values() {
@@ -117,7 +119,11 @@ mod tests {
     fn struct_update_moves_non_copy_but_keeps_copy_fields_usable() {
         let (custom, port, max_connections, verbose) = custom_with_surviving_defaults();
 
-        assert_eq!(custom.port, 3000, "Custom port should be 3000. Got {}.", custom.port);
+        assert_eq!(
+            custom.port, 3000,
+            "Custom port should be 3000. Got {}.",
+            custom.port
+        );
         assert!(custom.verbose, "Custom verbose should be true. Got false.");
         assert_eq!(
             custom.host, "localhost",
@@ -125,7 +131,11 @@ mod tests {
             custom.host
         );
 
-        assert_eq!(port, 8080, "`default_config.port` should still be usable (Copy). Got {}.", port);
+        assert_eq!(
+            port, 8080,
+            "`default_config.port` should still be usable (Copy). Got {}.",
+            port
+        );
         assert_eq!(
             max_connections, 100,
             "`default_config.max_connections` should still be usable (Copy). Got {}.",

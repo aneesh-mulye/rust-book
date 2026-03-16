@@ -18,36 +18,35 @@ pub struct Rect {
 
 impl Rect {
     pub fn area(&self) -> f64 {
-        let _ = self;
-        0.0
+        self.width * self.height
     }
 
     pub fn perimeter(&self) -> f64 {
-        let _ = self;
-        0.0
+        2.0 * (self.width + self.height)
     }
 
     pub fn is_square(&self) -> bool {
-        let _ = self;
-        false
+        self.width == self.height
     }
 
     pub fn center(&self) -> (f64, f64) {
-        let _ = self;
-        (0.0, 0.0)
+        (self.x + self.width / 2.0, self.y + self.height / 2.0)
     }
 
     pub fn contains_point(&self, px: f64, py: f64) -> bool {
-        let _ = (self, px, py);
-        false
+        (self.x <= px)
+            && (px <= self.x + self.width)
+            && (self.y <= py)
+            && (py <= self.y + self.height)
     }
 
     pub fn overlaps(&self, other: &Rect) -> bool {
-        let _ = (self, other);
-        false
+        !(((self.x + self.width) < other.x)
+            || ((other.x + other.width) < self.x)
+            || ((self.y + self.height) < other.y)
+            || ((other.y + other.height) < self.y))
     }
 }
-
 
 // .
 // .
@@ -136,8 +135,14 @@ mod tests {
             height: 10.0,
         };
 
-        assert!(r.contains_point(5.0, 5.0), "(5,5) should be inside the rectangle.");
-        assert!(r.contains_point(0.0, 0.0), "Top-left corner should count as inside.");
+        assert!(
+            r.contains_point(5.0, 5.0),
+            "(5,5) should be inside the rectangle."
+        );
+        assert!(
+            r.contains_point(0.0, 0.0),
+            "Top-left corner should count as inside."
+        );
         assert!(
             !r.contains_point(-0.1, 0.0),
             "Point left of rectangle should be outside."

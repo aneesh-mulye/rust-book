@@ -17,38 +17,36 @@ pub struct EmailDraft {
 
 impl EmailDraft {
     pub fn new(to: &str) -> EmailDraft {
-        let _ = to;
         EmailDraft {
-            to: String::new(),
+            to: String::from(to),
             subject: String::new(),
             body: String::new(),
         }
     }
 
     pub fn with_subject(self, subject: &str) -> EmailDraft {
-        let _ = (self, subject);
         EmailDraft {
-            to: String::new(),
-            subject: String::new(),
-            body: String::new(),
+            to: self.to,
+            subject: String::from(subject),
+            body: self.body,
         }
     }
 
     pub fn with_body(self, body: &str) -> EmailDraft {
-        let _ = (self, body);
         EmailDraft {
-            to: String::new(),
-            subject: String::new(),
-            body: String::new(),
+            to: self.to,
+            subject: self.subject,
+            body: String::from(body),
         }
     }
 
     pub fn send(self) -> String {
-        let _ = self;
-        String::new()
+        format!(
+            "To: {}\nSubject: {}\nBody: {}",
+            self.to, self.subject, self.body
+        )
     }
 }
-
 
 // .
 // .
@@ -118,7 +116,10 @@ mod tests {
     fn with_methods_preserve_existing_fields() {
         let draft = EmailDraft::new("a@b.com").with_subject("S").with_body("B");
 
-        assert_eq!(draft.to, "a@b.com", "`to` should remain the originally supplied address.");
+        assert_eq!(
+            draft.to, "a@b.com",
+            "`to` should remain the originally supplied address."
+        );
         assert_eq!(draft.subject, "S", "Subject should be set by with_subject.");
         assert_eq!(draft.body, "B", "Body should be set by with_body.");
     }

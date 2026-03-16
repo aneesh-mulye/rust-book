@@ -14,12 +14,15 @@ pub struct Color {
 
 pub fn color_mixer_examples() -> (Color, Color, bool) {
     (
-        Color { r: 0, g: 0, b: 0 },
-        Color { r: 0, g: 0, b: 0 },
-        true,
+        Color { r: 255, g: 0, b: 0 },
+        Color {
+            r: 255,
+            g: 255,
+            b: 255,
+        },
+        false,
     )
 }
-
 
 // .
 // .
@@ -69,7 +72,7 @@ pub fn color_mixer_examples() -> (Color, Color, bool) {
 
 #[cfg(test)]
 mod tests {
-    use super::{color_mixer_examples, Color};
+    use super::{Color, color_mixer_examples};
 
     #[test]
     fn builds_prompt_colors() {

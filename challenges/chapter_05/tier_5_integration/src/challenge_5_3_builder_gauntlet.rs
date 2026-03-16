@@ -29,29 +29,51 @@ impl FormBuilder {
     }
 
     pub fn username(self, name: &str) -> FormBuilder {
-        let _ = name;
-        self
+        if name.is_empty() {
+            return FormBuilder {
+                errors: self.errors + 1,
+                ..self
+            };
+        }
+        FormBuilder {
+            username: String::from(name),
+            ..self
+        }
     }
 
     pub fn age(self, age: u32) -> FormBuilder {
-        let _ = age;
-        self
+        if age == 0 || age > 150 {
+            return FormBuilder {
+                errors: self.errors + 1,
+                ..self
+            };
+        }
+        FormBuilder { age, ..self }
     }
 
     pub fn accept_terms(self) -> FormBuilder {
-        self
+        FormBuilder {
+            accepted_terms: true,
+            ..self
+        }
     }
 
     pub fn build(self) -> Form {
-        let _ = self;
+        if !self.accepted_terms || self.errors != 0 {
+            return Form {
+                username: String::new(),
+                age: 0,
+                accepted_terms: false,
+            };
+        }
+
         Form {
-            username: String::new(),
-            age: 0,
-            accepted_terms: false,
+            username: self.username,
+            age: self.age,
+            accepted_terms: self.accepted_terms,
         }
     }
 }
-
 
 // .
 // .

@@ -15,19 +15,18 @@ pub struct Celsius(pub f64);
 pub struct Fahrenheit(pub f64);
 
 pub fn to_fahrenheit(c: &Celsius) -> Fahrenheit {
-    let _ = c;
-    Fahrenheit(0.0)
+    let Celsius(c) = c;
+    Fahrenheit(c * 9.0 / 5.0 + 32.0)
 }
 
 pub fn to_celsius(f: &Fahrenheit) -> Celsius {
-    let _ = f;
-    Celsius(0.0)
+    let Fahrenheit(f) = f;
+    Celsius((f - 32.0) * 5.0 / 9.0)
 }
 
 pub fn tuple_struct_assignment_allowed() -> bool {
-    true
+    false
 }
-
 
 // .
 // .
@@ -77,7 +76,7 @@ pub fn tuple_struct_assignment_allowed() -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::{to_celsius, to_fahrenheit, tuple_struct_assignment_allowed, Celsius};
+    use super::{Celsius, to_celsius, to_fahrenheit, tuple_struct_assignment_allowed};
 
     fn approx_eq(a: f64, b: f64) -> bool {
         (a - b).abs() < 1e-10

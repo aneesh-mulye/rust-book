@@ -15,23 +15,21 @@ pub struct Counter {
 
 impl Counter {
     pub fn increment(&mut self) {
-        let _ = self;
+        self.value = i32::min(self.value + 1, self.max);
     }
 
     pub fn decrement(&mut self) {
-        let _ = self;
+        self.value = i32::max(self.value - 1, self.min);
     }
 
     pub fn reset(&mut self) {
-        let _ = self;
+        self.value = self.min;
     }
 
     pub fn is_maxed(&self) -> bool {
-        let _ = self;
-        false
+        self.value == self.max
     }
 }
-
 
 // .
 // .
@@ -103,7 +101,10 @@ mod tests {
             "After 5 increments from 0 with max=3, expected [1,2,3,3,3]. Got {:?}.",
             observed
         );
-        assert!(counter.is_maxed(), "Counter should report maxed after clamping at max.");
+        assert!(
+            counter.is_maxed(),
+            "Counter should report maxed after clamping at max."
+        );
     }
 
     #[test]

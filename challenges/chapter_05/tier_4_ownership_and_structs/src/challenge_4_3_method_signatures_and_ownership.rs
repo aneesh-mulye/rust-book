@@ -13,27 +13,23 @@ pub struct Buffer {
 
 impl Buffer {
     pub fn len(&self) -> usize {
-        let _ = self;
-        0
+        self.data.len()
     }
 
     pub fn append(&mut self, text: &str) {
-        let _ = (self, text);
+        self.data = self.data.clone() + text;
     }
 
     pub fn into_data(self) -> String {
-        let _ = self;
-        String::new()
+        self.data
     }
 
     pub fn from_str(s: &str) -> Buffer {
-        let _ = s;
         Buffer {
-            data: String::new(),
+            data: String::from(s),
         }
     }
 }
-
 
 // .
 // .
@@ -94,7 +90,10 @@ mod tests {
         let len2 = buf.len();
         let extracted = buf.into_data();
 
-        assert_eq!(len1, 5, "Initial length should be 5 for 'hello'. Got {len1}.");
+        assert_eq!(
+            len1, 5,
+            "Initial length should be 5 for 'hello'. Got {len1}."
+        );
         assert_eq!(
             len2, 11,
             "Length after appending ' world' should be 11. Got {len2}."
@@ -111,7 +110,15 @@ mod tests {
         buf.append("abc");
         buf.append("def");
 
-        assert_eq!(buf.len(), 6, "After appending 'abc' and 'def', length should be 6.");
-        assert_eq!(buf.data, "abcdef", "Buffer data should be 'abcdef'. Got '{}'.", buf.data);
+        assert_eq!(
+            buf.len(),
+            6,
+            "After appending 'abc' and 'def', length should be 6."
+        );
+        assert_eq!(
+            buf.data, "abcdef",
+            "Buffer data should be 'abcdef'. Got '{}'.",
+            buf.data
+        );
     }
 }
