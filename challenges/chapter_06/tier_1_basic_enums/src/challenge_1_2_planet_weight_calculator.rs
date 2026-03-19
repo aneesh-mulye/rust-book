@@ -8,6 +8,8 @@
 // - `weight_on(earth_weight: f64, planet: &Planet) -> f64`
 // - `all_planets() -> [Planet; 8]`
 
+use std::num::Saturating;
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Planet {
     Mercury,
@@ -21,17 +23,33 @@ pub enum Planet {
 }
 
 pub fn surface_gravity_ratio(planet: &Planet) -> f64 {
-    let _ = planet;
-    0.0
+    match planet {
+        Planet::Mercury => 0.38,
+        Planet::Venus => 0.91,
+        Planet::Earth => 1.0,
+        Planet::Mars => 0.38,
+        Planet::Jupiter => 2.53,
+        Planet::Saturn => 1.07,
+        Planet::Uranus => 0.89,
+        Planet::Neptune => 1.13,
+    }
 }
 
 pub fn weight_on(earth_weight: f64, planet: &Planet) -> f64 {
-    let _ = (earth_weight, planet);
-    0.0
+    earth_weight * surface_gravity_ratio(planet)
 }
 
 pub fn all_planets() -> [Planet; 8] {
-    [Planet::Earth; 8]
+    [
+        Planet::Mercury,
+        Planet::Venus,
+        Planet::Earth,
+        Planet::Mars,
+        Planet::Jupiter,
+        Planet::Saturn,
+        Planet::Uranus,
+        Planet::Neptune,
+    ]
 }
 
 // .
@@ -82,7 +100,7 @@ pub fn all_planets() -> [Planet; 8] {
 
 #[cfg(test)]
 mod tests {
-    use super::{all_planets, surface_gravity_ratio, weight_on, Planet};
+    use super::{Planet, all_planets, surface_gravity_ratio, weight_on};
 
     fn approx_eq(a: f64, b: f64) -> bool {
         (a - b).abs() < 1e-9

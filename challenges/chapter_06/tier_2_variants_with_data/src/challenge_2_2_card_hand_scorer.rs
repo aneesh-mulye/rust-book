@@ -23,19 +23,20 @@ pub enum Card {
 
 impl Card {
     pub fn value(&self) -> u8 {
-        let _ = self;
-        0
+        match self {
+            Card::Number(v) => *v,
+            Card::Ace => 11,
+            _ => 10,
+        }
     }
 }
 
 pub fn hand_value(hand: &[Card]) -> u8 {
-    let _ = hand;
-    0
+    hand.iter().map(Card::value).sum()
 }
 
 pub fn is_bust(hand: &[Card]) -> bool {
-    let _ = hand;
-    false
+    hand_value(hand) > 21
 }
 
 // .
@@ -86,11 +87,15 @@ pub fn is_bust(hand: &[Card]) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::{hand_value, is_bust, Card};
+    use super::{Card, hand_value, is_bust};
 
     #[test]
     fn per_card_values_match_rules() {
-        assert_eq!(Card::Number(7).value(), 7, "Number card should return its inner value.");
+        assert_eq!(
+            Card::Number(7).value(),
+            7,
+            "Number card should return its inner value."
+        );
         assert_eq!(Card::Jack.value(), 10, "Jack should be worth 10.");
         assert_eq!(Card::Queen.value(), 10, "Queen should be worth 10.");
         assert_eq!(Card::King.value(), 10, "King should be worth 10.");

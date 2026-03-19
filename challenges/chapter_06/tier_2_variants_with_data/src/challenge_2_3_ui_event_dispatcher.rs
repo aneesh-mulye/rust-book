@@ -21,13 +21,39 @@ pub enum Event {
 }
 
 pub fn handle(event: &Event) -> String {
-    let _ = event;
-    String::new()
+    match event {
+        Event::Click { x, y } => {
+            if 0 <= *x && *x <= 200 && 0 <= *y && *y <= 50 {
+                String::from("Button area clicked")
+            } else {
+                format!("Click at ({x}, {y})")
+            }
+        }
+        Event::KeyPress(c) => {
+            if c.is_alphabetic() {
+                format!("Letter key: {c}")
+            } else if c.is_numeric() {
+                String::from("Number key")
+            } else {
+                format!("{c}")
+            }
+        }
+        Event::TextInput(text) => {
+            format!("Text input: {} ({} chars)", text.clone(), text.len())
+        }
+        Event::Scroll(amount) => {
+            if *amount <= 0 {
+                String::from("Scroll down")
+            } else {
+                String::from("Scroll up")
+            }
+        }
+        Event::Close => String::from("Window closed"),
+    }
 }
 
 pub fn process(events: &[Event]) -> Vec<String> {
-    let _ = events;
-    Vec::new()
+    events.iter().map(handle).collect()
 }
 
 // .
@@ -78,7 +104,7 @@ pub fn process(events: &[Event]) -> Vec<String> {
 
 #[cfg(test)]
 mod tests {
-    use super::{handle, process, Event};
+    use super::{Event, handle, process};
 
     #[test]
     fn handles_each_variant_type() {
@@ -121,11 +147,7 @@ mod tests {
 
     #[test]
     fn processing_array_preserves_order() {
-        let events = [
-            Event::KeyPress('x'),
-            Event::Scroll(2),
-            Event::Close,
-        ];
+        let events = [Event::KeyPress('x'), Event::Scroll(2), Event::Close];
         let expected = vec![
             String::from("Letter key: x"),
             String::from("Scroll up"),

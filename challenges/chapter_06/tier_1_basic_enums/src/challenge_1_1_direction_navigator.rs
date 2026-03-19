@@ -22,22 +22,47 @@ pub enum Direction {
 }
 
 pub fn opposite(dir: &Direction) -> Direction {
-    let _ = dir;
-    Direction::North
+    match dir {
+        Direction::North => Direction::South,
+        Direction::South => Direction::North,
+        Direction::East => Direction::West,
+        Direction::West => Direction::East,
+    }
 }
 
 pub fn turn_right(dir: &Direction) -> Direction {
-    let _ = dir;
-    Direction::North
+    match dir {
+        Direction::North => Direction::East,
+        Direction::South => Direction::West,
+        Direction::East => Direction::South,
+        Direction::West => Direction::North,
+    }
 }
 
 pub fn turn_left(dir: &Direction) -> Direction {
-    let _ = dir;
-    Direction::North
+    match dir {
+        Direction::North => Direction::West,
+        Direction::South => Direction::East,
+        Direction::East => Direction::North,
+        Direction::West => Direction::South,
+    }
 }
 
 pub fn navigation_sequence() -> Vec<Direction> {
-    Vec::new()
+    let mut nsq: Vec<Direction> = Vec::new();
+    let mut now = Direction::North;
+    nsq.push(now);
+    now = turn_right(&now);
+    nsq.push(now);
+    now = turn_right(&now);
+    nsq.push(now);
+    now = turn_left(&now);
+    nsq.push(now);
+    now = turn_right(&now);
+    nsq.push(now);
+    now = opposite(&now);
+    nsq.push(now);
+    nsq
 }
 
 // .
@@ -88,7 +113,7 @@ pub fn navigation_sequence() -> Vec<Direction> {
 
 #[cfg(test)]
 mod tests {
-    use super::{navigation_sequence, opposite, turn_left, turn_right, Direction};
+    use super::{Direction, navigation_sequence, opposite, turn_left, turn_right};
 
     #[test]
     fn turn_functions_cover_all_four_directions() {

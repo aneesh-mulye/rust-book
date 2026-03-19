@@ -10,6 +10,8 @@
 // - `describe(shape: &Shape) -> String`
 // - `largest_area_index(shapes: &[Shape]) -> Option<usize>`
 
+use core::f64;
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum Shape {
     Circle(f64),
@@ -18,18 +20,34 @@ pub enum Shape {
 }
 
 pub fn area(shape: &Shape) -> f64 {
-    let _ = shape;
-    0.0
+    match shape {
+        Shape::Circle(r) => std::f64::consts::PI * r * r,
+        Shape::Rectangle(w, h) => h * w,
+        Shape::RightTriangle(b, h) => 0.5 * b * h,
+    }
 }
 
 pub fn describe(shape: &Shape) -> String {
-    let _ = shape;
-    String::new()
+    let a = area(shape);
+    match shape {
+        Shape::Circle(r) => format!("Circle of radius {r} and area {a}"),
+        Shape::Rectangle(w, h) => format!("Rectangle with width {w} and height {h} and area {a}"),
+        Shape::RightTriangle(b, h) => {
+            format!("Right triangle with base {b} and height {h} and area {a}")
+        }
+    }
 }
 
 pub fn largest_area_index(shapes: &[Shape]) -> Option<usize> {
-    let _ = shapes;
-    None
+    let mut idx: Option<usize> = None;
+    let mut mxar = f64::MIN;
+    for (index, shape) in shapes.iter().enumerate() {
+        if mxar <= area(shape) {
+            idx = Some(index);
+            mxar = area(shape);
+        }
+    }
+    idx
 }
 
 // .
@@ -80,7 +98,7 @@ pub fn largest_area_index(shapes: &[Shape]) -> Option<usize> {
 
 #[cfg(test)]
 mod tests {
-    use super::{area, describe, largest_area_index, Shape};
+    use super::{Shape, area, describe, largest_area_index};
     use std::f64::consts::PI;
 
     fn approx_eq(a: f64, b: f64) -> bool {
