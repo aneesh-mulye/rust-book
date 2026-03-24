@@ -22,37 +22,58 @@ pub struct SensorReading {
 
 impl SensorReading {
     pub fn new(id: u32) -> SensorReading {
-        let _ = id;
         SensorReading {
-            sensor_id: 0,
+            sensor_id: id,
             temperature: None,
             humidity: None,
         }
     }
 
     pub fn with_temperature(self, t: f64) -> SensorReading {
-        let _ = t;
-        self
+        SensorReading {
+            temperature: Some(t),
+            ..self
+        }
     }
 
     pub fn with_humidity(self, h: f64) -> SensorReading {
-        let _ = h;
-        self
+        SensorReading {
+            humidity: Some(h),
+            ..self
+        }
     }
 
     pub fn is_complete(&self) -> bool {
-        let _ = self;
-        false
+        match (self.temperature, self.humidity) {
+            (Some(_), Some(_)) => true,
+            _ => false,
+        }
     }
 
     pub fn heat_index(&self) -> Option<f64> {
-        let _ = self;
-        None
+        match (self.temperature, self.humidity) {
+            (Some(t), Some(h)) => Some(t + 0.05 * h),
+            _ => None,
+        }
     }
 
     pub fn display(&self) -> String {
-        let _ = self;
-        String::new()
+        format!(
+            "Sensor {}: temp={}, humidity={}, heat index={}",
+            self.sensor_id,
+            match self.temperature {
+                None => String::from("--"),
+                Some(v) => format!("{v:.1}"),
+            },
+            match self.humidity {
+                None => String::from("--"),
+                Some(v) => format!("{v:.1}"),
+            },
+            match self.heat_index() {
+                None => String::from("--"),
+                Some(v) => format!("{v:.2}"),
+            },
+        )
     }
 }
 
@@ -117,9 +138,20 @@ mod tests {
             .with_humidity(65.0);
 
         assert_eq!(reading.sensor_id, 1, "Sensor id should be preserved as 1.");
-        assert_eq!(reading.temperature, Some(23.5), "Temperature should be Some(23.5).");
-        assert_eq!(reading.humidity, Some(65.0), "Humidity should be Some(65.0).");
-        assert!(reading.is_complete(), "Reading with both values present should be complete.");
+        assert_eq!(
+            reading.temperature,
+            Some(23.5),
+            "Temperature should be Some(23.5)."
+        );
+        assert_eq!(
+            reading.humidity,
+            Some(65.0),
+            "Humidity should be Some(65.0)."
+        );
+        assert!(
+            reading.is_complete(),
+            "Reading with both values present should be complete."
+        );
         assert!(
             approx_eq(reading.heat_index().unwrap_or(-1.0), 26.75),
             "Heat index should be temperature + 0.05 * humidity = 26.75."
@@ -131,14 +163,27 @@ mod tests {
         let temp_only = SensorReading::new(2).with_temperature(19.0);
         let empty = SensorReading::new(3);
 
-        assert!(!temp_only.is_complete(), "Temperature-only reading should not be complete.");
-        assert_eq!(temp_only.heat_index(), None, "Missing humidity should produce None heat index.");
-        assert_eq!(empty.heat_index(), None, "Missing both readings should produce None heat index.");
+        assert!(
+            !temp_only.is_complete(),
+            "Temperature-only reading should not be complete."
+        );
+        assert_eq!(
+            temp_only.heat_index(),
+            None,
+            "Missing humidity should produce None heat index."
+        );
+        assert_eq!(
+            empty.heat_index(),
+            None,
+            "Missing both readings should produce None heat index."
+        );
     }
 
     #[test]
     fn display_formats_missing_values_as_dashes() {
-        let full = SensorReading::new(1).with_temperature(23.5).with_humidity(65.0);
+        let full = SensorReading::new(1)
+            .with_temperature(23.5)
+            .with_humidity(65.0);
         let temp_only = SensorReading::new(2).with_temperature(19.0);
         let empty = SensorReading::new(3);
 

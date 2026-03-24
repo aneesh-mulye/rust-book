@@ -10,23 +10,31 @@
 // reciprocal `0.2` should classify as `"small"`.
 
 pub fn get(arr: &[i32], index: usize) -> Option<i32> {
-    let _ = (arr, index);
-    None
+    let maxind = arr.len() - 1;
+    if index > maxind {
+        None
+    } else {
+        Some(arr[index])
+    }
 }
 
 pub fn reciprocal(n: i32) -> Option<f64> {
-    let _ = n;
-    None
+    if n == 0 { None } else { Some(1.0 / n as f64) }
 }
 
 pub fn classify(x: f64) -> &'static str {
-    let _ = x;
-    ""
+    if x < 0.5 { "small" } else { "large" }
 }
 
 pub fn lookup_and_classify(arr: &[i32], index: usize) -> String {
-    let _ = (arr, index);
-    String::new()
+    let arrelem = get(arr, index);
+    match arrelem {
+        None => format!("Index {index}: index out of bounds"),
+        Some(v) => match reciprocal(v) {
+            None => format!("Index {index}: element is 0 - cannot compute reciprocal"),
+            Some(r) => format!("Index {index}: reciprocal of {v} is {r} ({})", classify(r)),
+        },
+    }
 }
 
 // .
@@ -88,7 +96,11 @@ mod tests {
         let data = [0, 5, -3, 0, 8];
 
         assert_eq!(get(&data, 1), Some(5), "Index 1 should return Some(5).");
-        assert_eq!(get(&data, 10), None, "Out-of-bounds access should return None.");
+        assert_eq!(
+            get(&data, 10),
+            None,
+            "Out-of-bounds access should return None."
+        );
         assert_eq!(reciprocal(0), None, "Reciprocal of 0 should be None.");
         assert!(
             approx_eq(reciprocal(5).unwrap_or(-1.0), 0.2),
@@ -98,8 +110,16 @@ mod tests {
 
     #[test]
     fn classify_matches_prompt_example_behavior() {
-        assert_eq!(classify(0.2), "small", "0.2 should classify as 'small' per the prompt example.");
-        assert_eq!(classify(2.0), "large", "A larger reciprocal like 2.0 should classify as 'large'.");
+        assert_eq!(
+            classify(0.2),
+            "small",
+            "0.2 should classify as 'small' per the prompt example."
+        );
+        assert_eq!(
+            classify(2.0),
+            "large",
+            "A larger reciprocal like 2.0 should classify as 'large'."
+        );
     }
 
     #[test]

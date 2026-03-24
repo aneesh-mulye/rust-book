@@ -5,12 +5,30 @@
 // - `find_first_even(numbers) -> Option<i32>`
 
 pub fn find_first_above(numbers: &[i32], threshold: i32) -> Option<usize> {
-    let _ = (numbers, threshold);
+    for (i, n) in numbers.iter().enumerate() {
+        match *n {
+            n if n > threshold => {
+                return Some(i);
+            }
+            _ => {
+                continue;
+            }
+        }
+    }
     None
 }
 
 pub fn find_first_even(numbers: &[i32]) -> Option<i32> {
-    let _ = numbers;
+    for n in numbers {
+        match (*n) % 2 {
+            0 => {
+                return Some(*n);
+            }
+            _ => {
+                continue;
+            }
+        }
+    }
     None
 }
 

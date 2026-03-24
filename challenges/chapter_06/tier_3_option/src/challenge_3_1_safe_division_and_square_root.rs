@@ -8,13 +8,17 @@
 // `safe_sqrt` should return `None` when `x < 0.0`.
 
 pub fn safe_divide(a: f64, b: f64) -> Option<f64> {
-    let _ = (a, b);
-    None
+    match b {
+        0.0 => None,
+        _ => Some(a / b),
+    }
 }
 
 pub fn safe_sqrt(x: f64) -> Option<f64> {
-    let _ = x;
-    None
+    match x {
+        n if n >= 0.0 => Some(n.sqrt()),
+        _ => None,
+    }
 }
 
 // .
