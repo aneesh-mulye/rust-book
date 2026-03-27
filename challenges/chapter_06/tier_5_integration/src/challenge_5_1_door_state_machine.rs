@@ -28,24 +28,61 @@ pub enum Action {
 
 impl DoorState {
     pub fn describe(&self) -> &'static str {
-        let _ = self;
-        ""
+        match self {
+            Self::Locked => "Locked",
+            Self::Closed => "Closed",
+            Self::Open => "Open",
+        }
+    }
+}
+
+impl Action {
+    pub fn describe(&self) -> &'static str {
+        match self {
+            Self::InsertKey => "InsertKey",
+            Self::Turn => "Turn",
+            Self::Push => "Push",
+            Self::Pull => "Pull",
+            Self::RemoveKey => "RemoveKey",
+        }
     }
 }
 
 pub fn transition(state: DoorState, action: &Action) -> DoorState {
-    let _ = action;
-    state
+    match (state, action) {
+        (DoorState::Locked, Action::Turn) => DoorState::Closed,
+        (DoorState::Closed, Action::Push) => DoorState::Open,
+        (DoorState::Closed, Action::Turn) => DoorState::Locked,
+        (DoorState::Open, Action::Pull) => DoorState::Closed,
+        _ => state,
+    }
 }
 
 pub fn requires_key(action: &Action) -> bool {
-    let _ = action;
-    false
+    matches!(action, Action::Turn)
 }
 
 pub fn run_sequence(start: DoorState, actions: &[Action]) -> Vec<String> {
-    let _ = (start, actions);
-    Vec::new()
+    let (_, log) =
+        actions
+            .iter()
+            .fold((start, Vec::new()), |(curr_state, mut acc), next_action| {
+                let next_state = transition(curr_state, next_action);
+                acc.push(format!(
+                    "[{}] {} -> {}{}",
+                    next_action.describe(),
+                    curr_state.describe(),
+                    next_state.describe(),
+                    if curr_state == next_state {
+                        " (no state change)"
+                    } else {
+                        ""
+                    }
+                ));
+                (next_state, acc)
+            });
+
+    log
 }
 
 // .
@@ -96,7 +133,7 @@ pub fn run_sequence(start: DoorState, actions: &[Action]) -> Vec<String> {
 
 #[cfg(test)]
 mod tests {
-    use super::{requires_key, run_sequence, transition, Action, DoorState};
+    use super::{Action, DoorState, requires_key, run_sequence, transition};
 
     #[test]
     fn tuple_style_transitions_match_rules() {
@@ -124,8 +161,14 @@ mod tests {
 
     #[test]
     fn requires_key_distinguishes_key_actions_from_manual_actions() {
-        assert!(requires_key(&Action::Turn), "Turning the lock should require a key.");
-        assert!(!requires_key(&Action::Push), "Pushing the door should not require a key.");
+        assert!(
+            requires_key(&Action::Turn),
+            "Turning the lock should require a key."
+        );
+        assert!(
+            !requires_key(&Action::Push),
+            "Pushing the door should not require a key."
+        );
     }
 
     #[test]
