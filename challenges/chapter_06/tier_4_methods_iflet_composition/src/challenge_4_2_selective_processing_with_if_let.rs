@@ -5,12 +5,33 @@
 // - `first_valid(readings) -> Option<f64>`
 
 pub fn summarize_readings(readings: &[Option<f64>]) -> (usize, f64, f64, usize) {
-    let _ = readings;
-    (0, 0.0, 0.0, 0)
+    let mut valid_sum = 0.0;
+    let mut count: usize = 0;
+    for reading in readings {
+        match reading {
+            Some(r) => {
+                count += 1;
+                valid_sum += r;
+            }
+            None => (),
+        }
+    }
+
+    (
+        count,
+        valid_sum,
+        valid_sum / count as f64,
+        readings.len() - count,
+    )
 }
 
 pub fn first_valid(readings: &[Option<f64>]) -> Option<f64> {
-    let _ = readings;
+    #[allow(clippy::manual_flatten)]
+    for reading in readings {
+        if let Some(r) = reading {
+            return Some(*r);
+        }
+    }
     None
 }
 
@@ -80,7 +101,10 @@ mod tests {
         let (valid, sum, average, failed) = summarize_readings(&readings);
 
         assert_eq!(valid, 5, "There should be 5 valid readings.");
-        assert!((sum - 114.4).abs() < 1e-10, "Sum of valid readings should be 114.4. Got {sum}.");
+        assert!(
+            (sum - 114.4).abs() < 1e-10,
+            "Sum of valid readings should be 114.4. Got {sum}."
+        );
         assert!(
             (average - 22.88).abs() < 1e-10,
             "Average of valid readings should be 22.88. Got {average}."
@@ -91,7 +115,15 @@ mod tests {
     #[test]
     fn finds_first_some_value() {
         let readings = [None, None, Some(9.5), Some(10.0)];
-        assert_eq!(first_valid(&readings), Some(9.5), "First valid reading should be 9.5.");
-        assert_eq!(first_valid(&[None, None]), None, "All-None input should return None.");
+        assert_eq!(
+            first_valid(&readings),
+            Some(9.5),
+            "First valid reading should be 9.5."
+        );
+        assert_eq!(
+            first_valid(&[None, None]),
+            None,
+            "All-None input should return None."
+        );
     }
 }
